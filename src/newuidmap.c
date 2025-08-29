@@ -143,7 +143,7 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	if (!sub_uid_open(O_RDONLY)) {
+	if (want_subuids() && !sub_uid_open(O_RDONLY)) {
 		fprintf (stderr,
 		         _("%s: cannot open %s: %s\n"),
 		         Prog, sub_uid_dbname (), strerror (errno));

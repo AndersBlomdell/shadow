@@ -416,6 +416,8 @@ static int add_range(struct commonio_db *db,
 	range.start = start;
 	range.count = count;
 
+        fprintf(stderr, "XXX add_range\n");
+
 	/* See if the range is already present */
 	if (have_range(db, owner, start, count))
 		return 1;
@@ -560,6 +562,8 @@ static bool have_range(struct commonio_db *db,
 	bool ret = false;
 	int rc;
 
+        fprintf(stderr, "XXX have_range\n");
+
 	if (count == 0)
 		return false;
 
@@ -611,21 +615,25 @@ int sub_uid_setdbname (const char *filename)
 
 bool sub_uid_file_present (void)
 {
+	fprintf(stderr, "XXX %s\n", __FUNCTION__);
 	return commonio_present (&subordinate_uid_db);
 }
 
 int sub_uid_lock (void)
 {
+	fprintf(stderr, "XXX %s\n", __FUNCTION__);
 	return commonio_lock (&subordinate_uid_db);
 }
 
 int sub_uid_open (int mode)
 {
+	fprintf(stderr, "XXX %s\n", __FUNCTION__);
 	return commonio_open (&subordinate_uid_db, mode);
 }
 
 bool local_sub_uid_assigned(const char *owner)
 {
+	fprintf(stderr, "XXX %s\n", __FUNCTION__);
 	return range_exists (&subordinate_uid_db, owner);
 }
 
@@ -635,6 +643,7 @@ bool have_sub_uids(const char *owner, uid_t start, unsigned long count)
 	bool found;
 	enum subid_status status;
 	h = get_subid_nss_handle();
+        fprintf(stderr, "XXX have_sub_uids %p\n", h);
 	if (h) {
 		status = h->has_range(owner, start, count, ID_TYPE_UID, &found);
 		if (status == SUBID_STATUS_SUCCESS && found)
@@ -671,17 +680,20 @@ int sub_uid_remove (const char *owner, uid_t start, unsigned long count)
 
 int sub_uid_close (void)
 {
+	fprintf(stderr, "XXX %s\n", __FUNCTION__);
 	return commonio_close (&subordinate_uid_db);
 }
 
 int sub_uid_unlock (void)
 {
+	fprintf(stderr, "XXX %s\n", __FUNCTION__);
 	return commonio_unlock (&subordinate_uid_db);
 }
 
 uid_t sub_uid_find_free_range(uid_t min, uid_t max, unsigned long count)
 {
 	unsigned long start;
+	fprintf(stderr, "XXX %s\n", __FUNCTION__);
 	start = find_free_range (&subordinate_uid_db, min, max, count);
 	return start == ULONG_MAX ? (uid_t) -1 : start;
 }
